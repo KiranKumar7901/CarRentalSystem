@@ -8,7 +8,12 @@ import Model.Database;
 import Model.Operation;
 import Model.User;
 
-public class AddNewClient implements Operation {
+public class AddNewAccount implements Operation {
+	
+	private int accType;
+	public AddNewAccount(int accType) {
+		this.accType = accType;
+	}
 	
 	@Override
 	public void Operation(Database database, Scanner scan, User user) {
@@ -31,17 +36,16 @@ public class AddNewClient implements Operation {
 			System.out.println("Confirm Password");
 			confirmPassword = scan.next();
 		}
-		int accType = 0;
 		
 		try {
 			ResultSet rs = database.getStatement().executeQuery("SELECT Count(*);");
 			rs.next();
 			
-			int ID = rs.getInt("Count(*)");
+			int ID = rs.getInt("Count(*)")-1;
 			
-			String insert = "Insert into `users`(`ID`,`FirstName`,`LastName`,`Email`,`PhoneNumber`,`Password`,`Type`) values (`"+ID+"`,`"+firstName+"`,`"+lastName+"`,`"+email+"`,`"+phoneNumber+"`,`"+password+"`,`"+accType+"`)`";
+			String insert = "Insert into `users`(`ID`,`FirstName`,`LastName`,`Email`,`PhoneNumber`,`Password`,`Type`) values ('"+ID+"','"+firstName+"','"+lastName+"','"+email+"','"+phoneNumber+"','"+password+"','"+accType+"');";
 			database.getStatement().execute(insert);
-			System.out.println("Client Account created successfully");
+			System.out.println("Account created successfully");
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}

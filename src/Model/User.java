@@ -23,7 +23,7 @@ public abstract class User {
 	public String getFirstName() {
 		return firstName;
 	}
-	public void setID(String firstName) {
+	public void setFirstName(String firstName) {
 		this.firstName=firstName;
 	}
 	public String getLastName() {
