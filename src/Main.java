@@ -1,10 +1,10 @@
 import java.util.*;
 
-class Car{
+class Car1{
 	private String carId, brand, model;
 	private double basePricePerDay;
 	private	boolean isAvailable;
-	public Car(String carId, String brand, String model, double basePricePerDay) {
+	public Car1(String carId, String brand, String model, double basePricePerDay) {
 		this.carId = carId;
 		this.brand = brand;
 		this.model =model;
@@ -49,16 +49,16 @@ class Customer{
 }
 
 class Rental{
-	private Car car;
+	private Car1 car;
 	private Customer customer;
 	private int days;
 	
-	public Rental(Car car, Customer customer, int days) {
+	public Rental(Car1 car, Customer customer, int days) {
 		this.car = car;
 		this.customer = customer;
 		this.days = days;
 	}
-	public Car getCar() {
+	public Car1 getCar() {
 		return car;
 	}
 	public Customer getCustomer() {
@@ -70,7 +70,7 @@ class Rental{
 }
 
 class CarRentalSystem{
-	private List<Car> cars;
+	private List<Car1> cars;
 	private List<Customer> customers;
 	private List<Rental> rentals;
 	
@@ -79,20 +79,20 @@ class CarRentalSystem{
 		customers = new ArrayList<>();
 		rentals = new ArrayList<>();
 	}
-	public void addCar(Car car) {
+	public void addCar(Car1 car) {
 		cars.add(car);
 	}
 	public void addCustomer(Customer customer) {
 		customers.add(customer);
 	}
-	public void rentCar(Car car, Customer customer, int days) {
+	public void rentCar(Car1 car, Customer customer, int days) {
 		if (car.isAvailable()) {
 			car.rent();
 			rentals.add(new Rental(car,customer,days));
 		}
 		else System.out.println("Car is not available for rent!!!");
 	}
-	public void returnCar(Car car) {
+	public void returnCar(Car1 car) {
 		car.returnCar();
 		Rental rentalToRemove = null;
 		for(Rental rental:rentals) {
@@ -124,7 +124,7 @@ class CarRentalSystem{
 				System.out.println("Enter your Name: ");
 				String customerName = scan.nextLine();
 				System.out.println("Available Cars: ");
-				for(Car car: cars) {
+				for(Car1 car: cars) {
 					if(car.isAvailable()) {
 						System.out.println(car.getCarId()+" - "+car.getBrand()+" "+car.getModel());
 					}
@@ -139,8 +139,8 @@ class CarRentalSystem{
 				Customer newCustomer = new Customer(customerName, "CUS"+(customers.size()+1));
 				addCustomer(newCustomer);
 				
-				Car selectedCar = null;
-				for(Car car: cars) {
+				Car1 selectedCar = null;
+				for(Car1 car: cars) {
 					if(car.getCarId().equals(carId) && car.isAvailable()) {
 						selectedCar = car;
 						break;
@@ -171,8 +171,8 @@ class CarRentalSystem{
 				System.out.println("Enter the Car Id you want to return: ");
 				String carId = scan.nextLine();
 				
-				Car carToReturn = null;
-				for(Car car:cars) {
+				Car1 carToReturn = null;
+				for(Car1 car:cars) {
 					if(car.getCarId().equals(carId) && !car.isAvailable()) {
 						carToReturn = car;
 						break;
@@ -206,9 +206,9 @@ public class Main {
 	public static void main(String[] args) {
 		CarRentalSystem crs = new CarRentalSystem();
 		
-		Car car1 = new Car("C001","Toyota","Camry",60.0);
-		Car car2 = new Car("C002","Honda","Accord",75.5);
-		Car car3 = new Car("C003","Mahindra","Thar",150.0);
+		Car1 car1 = new Car1("C001","Toyota","Camry",60.0);
+		Car1 car2 = new Car1("C002","Honda","Accord",75.5);
+		Car1 car3 = new Car1("C003","Mahindra","Thar",150.0);
 		
 		crs.addCar(car1);
 		crs.addCar(car2);
@@ -216,5 +216,4 @@ public class Main {
 		
 		crs.menu();
 	}
-
 }
