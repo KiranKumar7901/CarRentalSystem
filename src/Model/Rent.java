@@ -1,6 +1,7 @@
 package Model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 public class Rent {
 	private int ID;
@@ -9,8 +10,11 @@ public class Rent {
 	private LocalDateTime dateTime;
 	private int hours;
 	private double total;
-	private String status;
-	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-dd-MM hh:mm");
+	private int status;
+	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-dd-MM HH:mm");
+	
+//	Status 0 ==> running
+//	Status 1 ==> returned
 	
 	public Rent() {
 		dateTime = LocalDateTime.now();
@@ -37,6 +41,9 @@ public class Rent {
 	public String getDateTime() {
 		return formatter.format(dateTime);
 	}
+	public LocalDateTime getLocalDateTime() {
+		return dateTime;
+	}
 	public void setDateTime(String dateTimeString) {
 		this.dateTime = LocalDateTime.parse(dateTimeString,formatter);
 	}
@@ -52,10 +59,29 @@ public class Rent {
 	public void setTotal(double total) {
 		this.total = total;
 	}
-	public String getStatus() {
+	public int getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public String getStatusToString() {
+		long passedHours = ChronoUnit.HOURS.between(dateTime,LocalDateTime.now());
+		String status = "";
+		if(getStatus()!=1 && passedHours<getHours()) {
+			status = "Estimated";
+		}
+		else if(getStatus()!=1 && passedHours>getHours()) {
+			status = "Delayed";
+		}
+		else if(getStatus()==1) {
+			status = "Returned";
+		}
+		return status;
+	}
+	
+	public long getDelayedHours() {
+		long passedHours = ChronoUnit.HOURS.between(dateTime,LocalDateTime.now());
+		return passedHours-hours;
+	}
+	public void setStatus(int status) {
 		this.status = status;
 	}
 }

@@ -14,6 +14,11 @@ public abstract class User {
 		
 	}
 	
+//	Type 0 - Client
+//	Type 1 - Admin
+//	Type 2 - DeletedClientAccount
+//	Type 3 - Deleted Admin Account
+	
 	public int getID() {
 		return ID;
 	}

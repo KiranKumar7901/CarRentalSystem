@@ -19,6 +19,10 @@ public class Main {
 		System.out.println("Welcome to Car Rental System!!!");
 		System.out.println("Enter your Email");
 		String email = scan.next();
+		if(email.equals("-1")) {
+			new AddNewAccount(0).Operation(database, scan, null);
+			return;
+		}
 		System.out.println("Enter your Password");
 		String password = scan.next();
 		
@@ -37,34 +41,45 @@ public class Main {
 				String pass = rs.getString("Password");
 				int type = rs.getInt("Type");
 				
-				switch(type) {
-					case 0:
-						user = new Client();
-						break;
-					case 1:
-						user = new Admin();
-						break;
-					default:
-						user = new Client();
-						break;
+				if(type==0) {					
+					user = new Client();
+					
+					user.setID(ID);
+					user.setFirstName(firstName);
+					user.setLastName(lastName);
+					user.setEmail(em);
+					user.setPhoneNumber(phoneNumber);
+					user.setPassword(pass);
+					users.add(user);
+				}else if(type==1) {					
+					user = new Admin();
+					
+					user.setID(ID);
+					user.setFirstName(firstName);
+					user.setLastName(lastName);
+					user.setEmail(em);
+					user.setPhoneNumber(phoneNumber);
+					user.setPassword(pass);
+					users.add(user);
 				}
 				
-				user.setID(ID);
-				user.setFirstName(firstName);
-				user.setLastName(lastName);
-				user.setEmail(em);
-				user.setPhoneNumber(phoneNumber);
-				user.setPassword(pass);
-				users.add(user);
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
+		
+		boolean loggedIn = false;
 		for(User u : users) {
 			if(u.getEmail().equals(email)&&u.getPassword().equals(password)) {
 				System.out.println("Welcome "+u.getFirstName()+" !");
+				loggedIn = true;
 				u.showList(database, scan);
 			}
+		}
+		
+		if(!loggedIn) {
+			System.out.println("Email or Password doesn't match!!");
+			scan.close();
 		}
 	}
 }
