@@ -2,6 +2,8 @@ package Model;
 
 import java.util.Scanner;
 
+import javax.swing.JFrame;
+
 public abstract class User {
 	private int ID;
 	private String firstName;
@@ -56,5 +58,5 @@ public abstract class User {
 		this.password=password;
 	}
 	
-	public abstract void showList(Database database, Scanner scan);
+	public abstract void showList(Database database, JFrame f);
 }

@@ -1,30 +1,66 @@
 package Controller;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.*;
+import java.util.*;
 
-import Model.Admin;
-import Model.Client;
-import Model.Database;
-import Model.User;
+import javax.swing.*;
+
+import Model.*;
+import Model.JButton;
+import Model.JLabel;
+import Model.JPasswordField;
+import Model.JTextField;
 
 public class Main {
 	
+	private static Database database;
+	
 	public static void main(String[] args) {
-		Database database = new Database();
-		Scanner scan = new Scanner(System.in);
+		database = new Database();		
+		start();
+	}
+	
+	public static void start() {
+		JFrame frame = new JFrame("Login");
+		frame.setSize(600,330);
+		frame.setLocationRelativeTo(null);
+		frame.getContentPane().setBackground(new Color(250,206,27));
+		frame.setLayout(new BorderLayout());
 		
-		System.out.println("Welcome to Car Rental System!!!");
-		System.out.println("Enter your Email");
-		String email = scan.next();
-		if(email.equals("-1")) {
-			new AddNewAccount(0).Operation(database, scan, null);
-			return;
-		}
-		System.out.println("Enter your Password");
-		String password = scan.next();
+		JLabel title = new JLabel("Welcome to Car Rental System",35);
+		title.setBorder(BorderFactory.createEmptyBorder(20,0,0,0));
+		frame.add(title, BorderLayout.NORTH);
+		
+		JPanel panel = new JPanel(new GridLayout(3,2,15,15));
+		panel.setBackground(null);
+		panel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+		
+
+		panel.add(new JLabel("Email",22));
+		
+		JTextField email = new JTextField(22);
+		panel.add(email);
+		
+		panel.add(new JLabel("Password",22));
+		
+		JPasswordField password = new JPasswordField(22);
+		panel.add(password);
+		
+		JButton createAcc = new JButton("Create New Account",22);
+		createAcc.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new AddNewAccount(0).Operation(database, frame, null);
+				frame.dispose();
+				
+			}
+			
+		});
+		panel.add(createAcc);
 		
 		ArrayList<User> users = new ArrayList<>();
 		
@@ -68,18 +104,59 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-		boolean loggedIn = false;
-		for(User u : users) {
-			if(u.getEmail().equals(email)&&u.getPassword().equals(password)) {
-				System.out.println("Welcome "+u.getFirstName()+" !");
-				loggedIn = true;
-				u.showList(database, scan);
-			}
-		}
 		
-		if(!loggedIn) {
-			System.out.println("Email or Password doesn't match!!");
-			scan.close();
-		}
+		JButton login = new JButton("Login",22);
+		login.addActionListener(new ActionListener() {
+
+			@SuppressWarnings("deprecation")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				if(email.getText().equals("")) {
+					JOptionPane.showMessageDialog(frame,"Email cannot be empty");
+					return;
+				}
+				if(password.getText().equals("")) {
+					JOptionPane.showMessageDialog(frame,"Password cannot be empty");
+					return;
+				}
+
+				boolean loggedIn = false;
+				for(User u : users) {
+					if(u.getEmail().equals(email.getText()) && u.getPassword().equals(password.getText())) {
+//						System.out.println("Welcome "+u.getFirstName()+" !");
+						loggedIn = true;
+//						System.out.println("Logged in Successfully");
+						u.showList(database, frame);
+						frame.dispose();
+					}
+				}
+				
+				if(!loggedIn) {
+					JOptionPane.showMessageDialog(frame,"Email or Password doesn't match!!");
+//					System.out.println("");
+				}
+				
+			}
+			
+		});
+		panel.add(login);
+		
+		frame.add(panel, BorderLayout.CENTER);
+		frame.setVisible(true);
+		
+		
+//		Scanner scan = new Scanner(System.in);
+//		
+//		System.out.println("Welcome to Car Rental System!!!");
+//		System.out.println("Enter your Email");
+//		String email = scan.next();
+//		if(email.equals("-1")) {
+//			new AddNewAccount(0).Operation(database, scan, null);
+//			return;
+//		}
+//		System.out.println("Enter your Password");
+//		String password = scan.next();
+		
 	}
 }
