@@ -21,7 +21,7 @@ public class ShowUserRent implements Operation {
 
 	@Override
 	public void Operation(Database database, JFrame f, User user) {
-		if(userID==2) userID=user.getID();
+//		if(userID==2) userID=user.getID();
 		
 		JFrame frame = new JFrame("Rents");
 		frame.setSize(1200,600);

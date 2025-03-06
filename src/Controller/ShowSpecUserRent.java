@@ -144,6 +144,7 @@ public class ShowSpecUserRent implements Operation{
 					u.setLastName(rs.getString("LastName"));
 					u.setEmail(rs.getString("Email"));
 					u.setPhoneNumber(rs.getString("PhoneNumber"));
+					users.add(u);
 					
 //					System.out.println("ID: "+rs.getInt("ID"));
 //					System.out.println("First Name: "+rs.getString("FirstName"));
